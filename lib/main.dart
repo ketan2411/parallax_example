@@ -115,7 +115,7 @@ class _ParallaxState extends State<ParallaxExample>
             Positioned(
               // top: size.height / 2 + x * 0.1 - 50,
               bottom: -10,
-              left: -size.width / 2 + y * 0.3 - 50,
+              left: -size.width / 2 + y * 0.1 - 50,
               child: Image.asset('/mountain.png'),
               //  duration: Duration.zero
             ),
@@ -129,7 +129,7 @@ class _ParallaxState extends State<ParallaxExample>
             Positioned(
               // top: size.height / 2 + x * 0.1 - 50,
               top: size.height / 2 - 100 * _moonRise,
-              left: -size.width / 2 + y * 0.1 + 50 * _moonRise,
+              left: -size.width / 2 + y * 0.3 + 50 * _moonRise,
               child: Image.asset('/birds.png'),
               //  duration: Duration.zero
             ),
