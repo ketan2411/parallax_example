@@ -45,115 +45,113 @@ class _ParallaxState extends State<ParallaxExample>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      decoration: const BoxDecoration(
-        // color: _animation.transform(t),
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(255, 148, 132, 209),
-              Color.fromARGB(255, 47, 61, 141),
-            ]),
-      ),
-      child: MouseRegion(
-        onEnter: (event) => developer.log(event.toStringFull()),
-        onExit: (event) => developer.log(event.toStringFull()),
-        onHover: (event) {
-          setState(() {
-            _pointerHoverEvent = event;
-            x = x + _pointerHoverEvent.localDelta.dy;
-            y = y + _pointerHoverEvent.localDelta.dx;
-            // developer.log((x / 100).toString());
-            _moonRise = _pointerHoverEvent.localPosition.dy / 400;
+    return MouseRegion(
+      onEnter: (event) => developer.log(event.toStringFull()),
+      onExit: (event) => developer.log(event.toStringFull()),
+      onHover: (event) {
+        setState(() {
+          _pointerHoverEvent = event;
+          x = x + _pointerHoverEvent.localDelta.dy;
+          y = y + _pointerHoverEvent.localDelta.dx;
+          _moonRise =
+              (_pointerHoverEvent.localPosition.dx * 100 / size.width) / 100;
 
-            if (_moonRise < 0.05) {
-              _moonRise = 0;
-            } else if (_moonRise > 0.95) {
-              _moonRise = 1;
-            }
-            developer.log(_moonRise.toString());
-            // log(y.toString());
+          developer.log(_moonRise.toString());
+        });
+      },
+      child: GestureDetector(
+        onPanUpdate: ((details) {
+          setState(() {
+            x = details.localPosition.dy;
+            y = details.localPosition.dx;
+            // _moonRise =
+            //     (_pointerHoverEvent.localPosition.dx * 100 / size.width) / 100;
+            // developer.log(_moonRise.toString());
+
+            developer.log(
+                '${details.globalPosition.dx},${details.globalPosition.dy}---${details.localPosition.dx},${details.localPosition.dy} || ${details.delta.dx},${details.delta.dy}');
           });
-        },
+        }),
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
             Opacity(
-              opacity: _moonRise,
+              opacity: 1,
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
+                      stops: [
+                        0,
+                        0.15,
+                        0.4
+                      ],
                       colors: [
-                        Color.fromARGB(255, 154, 176, 241),
-                        Color.fromARGB(255, 255, 255, 255),
-                        Color.fromARGB(255, 246, 209, 202),
-                        Color.fromARGB(255, 255, 84, 84),
+                        Color(0xff57B4A0),
+                        Color(0xffB7D9B6),
+                        Color(0xffE9F2E6),
                       ]),
                 ),
               ),
             ),
             Positioned(
+              // top: -180,
               top: _moonRise == 0
-                  ? 40
+                  ? -210
                   : _moonRise == 1
-                      ? 400
-                      : 400 * _moonRise,
-              left: size.width / 2 + y * 0.005 - 50,
-              child: Image.asset('/moon.png'),
+                      ? -180
+                      : -180 + 30 * _moonRise,
+              // left: size.width / 2 + y * 0.005 - 50,
+              child: Image.asset('/sun.png'),
+              //  duration: Duration.zero
+            ),
+
+            Positioned(
+              // top: size.height / 2 + x * 0.1 - 50,
+              // top: 10,
+              left: -size.width / 2 + y * 0.03 - 50,
+              child: Image.asset('/4.png'),
               //  duration: Duration.zero
             ),
             Positioned(
               // top: size.height / 2 + x * 0.1 - 50,
-              top: 10,
-              left: -size.width / 2 + y * 0.007 - 50,
-              child: Image.asset('/star.png'),
+              bottom: -100,
+              left: -size.width / 2 + y * 0.07 - 50,
+              child: Image.asset('/3.png'),
+              //  duration: Duration.zero
+            ),
+
+            Positioned(
+              // top: size.height / 2 + x * 0.1 - 50,
+              // top: size.height / 2 - 100 * _moonRise,
+              // bottom: 20,
+              left: -size.width / 2 + y * 0.3 + 50,
+              child: Image.asset('/2.png'),
               //  duration: Duration.zero
             ),
             Positioned(
               // top: size.height / 2 + x * 0.1 - 50,
-              bottom: -10,
-              left: -size.width / 2 + y * 0.1 - 50,
-              child: Image.asset('/mountain.png'),
+              bottom: 0,
+              left: -size.width / 1 + y * 1,
+              child: Image.asset('/1.png'),
               //  duration: Duration.zero
             ),
             Positioned(
-              // top: size.height / 2 + x * 0.1 - 50,
-              bottom: size.height * 0.1,
-              left: -size.width / 2 + y * 0.5 + 100,
-              child: Image.asset('/tree.png'),
-              //  duration: Duration.zero
+              top: -100,
+              child: Opacity(
+                opacity: 0.8,
+                child: Image.asset('/glow.png'),
+              ),
             ),
             Positioned(
-              // top: size.height / 2 + x * 0.1 - 50,
-              top: size.height / 2 - 100 * _moonRise,
-              left: -size.width / 2 + y * 0.3 + 50 * _moonRise,
-              child: Image.asset('/birds.png'),
-              //  duration: Duration.zero
-            ),
-            Positioned(
-              // top: size.height / 2 + x * 0.1 - 50,
-              bottom: -30,
-              left: -size.width / 2 + y * 0.8 - 600,
-              child: Image.asset('/grass.png'),
-              //  duration: Duration.zero
-            ),
-            Positioned(
-              // top: size.height / 2 + x * 0.1 - 50,
-              bottom: -10,
-              left: -size.width / 2 + y * 1 - 50,
-              child: Image.asset('/lake.png'),
-              //  duration: Duration.zero
-            ),
-            Positioned(
-              // top: size.height / 2 + x * 0.1 - 50,
+              right: 10,
               bottom: 10,
-              left: size.width / 2 + y * 1.5 - 50,
-              child: Image.asset('/stone.png'),
-              //  duration: Duration.zero
-            ),
+              child: Image.asset(
+                '/attribute.png',
+                height: 15,
+              ),
+            )
 
             // Align(
             //   alignment: Alignment(y * 0.001, x * 0.002),
