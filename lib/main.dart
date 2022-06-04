@@ -32,6 +32,7 @@ class ParallaxExample extends StatefulWidget {
 
 class _ParallaxState extends State<ParallaxExample>
     with TickerProviderStateMixin {
+  bool _isMobile = false;
   PointerHoverEvent _pointerHoverEvent = const PointerHoverEvent();
   // bool _rotate = false;
   double x = 0;
@@ -45,6 +46,9 @@ class _ParallaxState extends State<ParallaxExample>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    if (size.width < 800) {
+      _isMobile = true;
+    }
     return MouseRegion(
       onEnter: (event) => developer.log(event.toStringFull()),
       onExit: (event) => developer.log(event.toStringFull()),
@@ -133,7 +137,8 @@ class _ParallaxState extends State<ParallaxExample>
             Positioned(
               // top: size.height / 2 + x * 0.1 - 50,
               bottom: 0,
-              left: -size.width / 1 + y * 1,
+              // left: ,
+              left: _isMobile ? y - 700 : -size.width / 1 + y * 1,
               child: Image.asset('/1.png'),
               //  duration: Duration.zero
             ),
