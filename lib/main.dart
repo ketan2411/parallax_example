@@ -53,25 +53,23 @@ class _ParallaxState extends State<ParallaxExample>
       onEnter: (event) => developer.log(event.toStringFull()),
       onExit: (event) => developer.log(event.toStringFull()),
       onHover: (event) {
-        setState(() {
-          _pointerHoverEvent = event;
-          x = x + _pointerHoverEvent.localDelta.dy;
-          y = y + _pointerHoverEvent.localDelta.dx;
-          _moonRise =
-              (_pointerHoverEvent.localPosition.dx * 100 / size.width) / 100;
+        if (MediaQuery.of(context).size.width < 800) {
+          setState(() {
+            _pointerHoverEvent = event;
+            x = x + _pointerHoverEvent.localDelta.dy;
+            y = y + _pointerHoverEvent.localDelta.dx;
+            _moonRise =
+                (_pointerHoverEvent.localPosition.dx * 100 / size.width) / 100;
 
-          developer.log(_moonRise.toString());
-        });
+            developer.log(_moonRise.toString());
+          });
+        }
       },
       child: GestureDetector(
         onPanUpdate: ((details) {
           setState(() {
-            x = details.localPosition.dy;
-            y = details.localPosition.dx;
-            // _moonRise =
-            //     (_pointerHoverEvent.localPosition.dx * 100 / size.width) / 100;
-            // developer.log(_moonRise.toString());
-
+            x = x + details.delta.dy;
+            y = y + details.delta.dx;
             developer.log(
                 '${details.globalPosition.dx},${details.globalPosition.dy}---${details.localPosition.dx},${details.localPosition.dy} || ${details.delta.dx},${details.delta.dy}');
           });
@@ -79,24 +77,21 @@ class _ParallaxState extends State<ParallaxExample>
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
-            Opacity(
-              opacity: 1,
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [
-                        0,
-                        0.15,
-                        0.4
-                      ],
-                      colors: [
-                        Color(0xff57B4A0),
-                        Color(0xffB7D9B6),
-                        Color(0xffE9F2E6),
-                      ]),
-                ),
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [
+                      0,
+                      0.15,
+                      0.4
+                    ],
+                    colors: [
+                      Color(0xff57B4A0),
+                      Color(0xffB7D9B6),
+                      Color(0xffE9F2E6),
+                    ]),
               ),
             ),
             Positioned(
